@@ -1,0 +1,94 @@
+﻿<div class="container mt-4">
+
+    <!-- TIÊU ĐỀ -->
+    <div class="text-center mb-4">
+        <h1 class="text-primary">PETC Veterinary Clinic</h1>
+        <p>Chăm sóc thú cưng của bạn với dịch vụ tốt nhất</p>
+    </div>
+
+    <!-- BANNER -->
+    <div class="mb-5">
+        <img src="https://images.unsplash.com/photo-1558944351-cb2d47c3d9b5"
+             class="img-fluid rounded shadow" alt="Pet Clinic">
+    </div>
+
+    <!-- DỊCH VỤ -->
+    <h2 class="mb-3">Dịch vụ</h2>
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Service" asp-action="Detail" asp-route-id="1"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100" style="cursor:pointer;">
+                    <div class="card-body text-center">
+                        <h5>Khám tổng quát</h5>
+                        <p>Kiểm tra sức khỏe định kỳ cho thú cưng</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Service" asp-action="Detail" asp-route-id="2"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100" style="cursor:pointer;">
+                    <div class="card-body text-center">
+                        <h5>Tiêm phòng</h5>
+                        <p>Tiêm vaccine phòng bệnh</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Service" asp-action="Detail" asp-route-id="3"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100" style="cursor:pointer;">
+                    <div class="card-body text-center">
+                        <h5>Phẫu thuật</h5>
+                        <p>Dịch vụ phẫu thuật an toàn</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- BÁC SĨ -->
+    <h2 class="mt-5 mb-3">Đội ngũ bác sĩ</h2>
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Doctor" asp-action="Detail" asp-route-id="1"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100" style="cursor:pointer;">
+                    <div class="card-body text-center">
+                        <h5>BS. Nguyễn Văn A</h5>
+                        <p>Chuyên khoa thú y</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <a asp-controller="Doctor" asp-action="Detail" asp-route-id="2"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm h-100" style="cursor:pointer;">
+                    <div class="card-body text-center">
+                        <h5>BS. Trần Thị B</h5>
+                        <p>Chuyên phẫu thuật</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- ĐẶT LỊCH -->
+    <div class="text-center mt-5">
+        <a asp-controller="Appointment" asp-action="Index" class="btn btn-primary btn-lg">
+            Đặt lịch khám ngay
+        </a>
+    </div>
+
+</div>

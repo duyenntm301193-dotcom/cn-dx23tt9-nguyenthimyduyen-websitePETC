@@ -1,0 +1,61 @@
+﻿<div class="container mt-5">
+    <h2>Đặt lịch khám</h2>
+
+    <form>
+
+        <!-- TÊN -->
+        <div class="mb-3">
+            <label class="form-label">Tên khách hàng</label>
+            <input type="text" class="form-control" />
+        </div>
+
+        <!-- DỊCH VỤ -->
+        <div class="mb-3">
+            <label class="form-label">Chọn dịch vụ</label>
+            <select class="form-select">
+                <option selected disabled>-- Chọn dịch vụ --</option>
+                <option value="1">Khám tổng quát</option>
+                <option value="2">Tiêm phòng</option>
+                <option value="3">Phẫu thuật</option>
+            </select>
+        </div>
+
+        <!-- NGÀY -->
+        <div class="mb-3">
+            <label class="form-label">Ngày khám</label>
+            <input type="date" class="form-control" />
+        </div>
+
+        <!-- BÁC SĨ -->
+        <div class="mb-3">
+            <label class="form-label">Chọn bác sĩ</label>
+            <select class="form-select">
+                <option selected disabled>-- Chọn bác sĩ --</option>
+                <option value="1">BS. Nguyễn Văn A</option>
+                <option value="2">BS. Trần Thị B</option>
+            </select>
+        </div>
+
+        <!-- GIỜ KHÁM -->
+        <div class="mb-3">
+            <label class="form-label">Chọn giờ khám</label>
+            <select class="form-select">
+                <option selected disabled>-- Chọn giờ --</option>
+                <option>08:00</option>
+                <option>09:00</option>
+                <option>10:00</option>
+                <option>14:00</option>
+                <option>15:00</option>
+                <option>16:00</option>
+            </select>
+        </div>
+
+        <!-- GHI CHÚ -->
+        <div class="mb-3">
+            <label class="form-label">Ghi chú</label>
+            <textarea class="form-control"></textarea>
+        </div>
+
+        <button class="btn btn-primary">Đặt lịch</button>
+    </form>
+</div>

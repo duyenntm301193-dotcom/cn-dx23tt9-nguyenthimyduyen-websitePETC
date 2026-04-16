@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Chi tiết bác sĩ";
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+
+        <!-- ẢNH BÁC SĨ -->
+        <div class="col-md-4 text-center">
+            <img src="@ViewBag.Image"
+                 class="img-fluid rounded shadow"
+                 alt="Doctor Image">
+        </div>
+
+        <!-- THÔNG TIN -->
+        <div class="col-md-8">
+
+            <h2 class="text-primary">@ViewBag.Name</h2>
+
+            <h5 class="text-muted mt-3">
+                @ViewBag.Specialty
+            </h5>
+
+            <p class="mt-4">
+                @ViewBag.Description
+            </p>
+
+            <!-- NÚT -->
+            <div class="mt-4">
+
+                <a asp-controller="Appointment" asp-action="Index"
+                   class="btn btn-success me-2">
+                    Đặt lịch với bác sĩ này
+                </a>
+
+                <a asp-controller="Doctor" asp-action="Index"
+                   class="btn btn-secondary">
+                    Quay lại danh sách
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
