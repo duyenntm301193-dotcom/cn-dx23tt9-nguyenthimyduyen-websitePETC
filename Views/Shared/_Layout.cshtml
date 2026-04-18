@@ -43,6 +43,28 @@
                                 Đặt lịch
                             </a>
                         </li>
+                        @if (Context.Session.GetString("UserName") != null)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-white">
+                                    Xin chào, @Context.Session.GetString("UserName")
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Auth/Logout">Đăng xuất</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Auth/Login">Đăng nhập</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Auth/Register">Đăng ký</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

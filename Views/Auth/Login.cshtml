@@ -1,0 +1,13 @@
+﻿<h2>Đăng nhập</h2>
+
+<form method="post">
+    <input name="email" class="form-control mb-2" placeholder="Email" />
+    <input name="password" type="password" class="form-control mb-2" placeholder="Mật khẩu" />
+
+    <button class="btn btn-success">Đăng nhập</button>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}

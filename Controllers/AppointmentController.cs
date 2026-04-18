@@ -7,6 +7,12 @@ namespace PETC.Controllers
     {
         public IActionResult Index(int? serviceId)
         {
+            // 🚫 CHƯA LOGIN → CHUYỂN SANG LOGIN
+            if (HttpContext.Session.GetString("UserName") == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             var services = new List<dynamic>();
             var doctors = new List<dynamic>();
 
