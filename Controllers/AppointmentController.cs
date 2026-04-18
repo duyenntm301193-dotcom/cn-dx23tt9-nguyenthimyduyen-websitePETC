@@ -15,9 +15,10 @@ namespace PETC.Controllers
             {
                 return RedirectToAction("Login", "Auth");
             }
-
+            int userId = (int)HttpContext.Session.GetInt32("UserID");
             var services = new List<dynamic>();
             var doctors = new List<dynamic>();
+            var pets = new List<dynamic>();
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -51,18 +52,37 @@ namespace PETC.Controllers
                         Name = dr["Name"].ToString()
                     });
                 }
+                dr.Close();
+
+                //  PET 
+                var petCmd = new SqlCommand("SELECT * FROM Pet WHERE UserID = @userId", conn);
+                petCmd.Parameters.AddWithValue("@userId", userId);
+
+                var pr = petCmd.ExecuteReader();
+
+                while (pr.Read())
+                {
+                    pets.Add(new
+                    {
+                        Id = (int)pr["PetID"],
+                        Name = pr["PetName"].ToString()
+                    });
+                }
+                pr.Close();
             }
 
             ViewBag.Services = services;
             ViewBag.Doctors = doctors;
+            ViewBag.Pets = pets;
             ViewBag.SelectedServiceId = serviceId;
 
             return View();
+
         }
 
         // ===== POST (LƯU DATABASE) =====
         [HttpPost]
-        public IActionResult Index(int ServiceId, int DoctorId, DateTime Date, string Time)
+        public IActionResult Index(int ServiceId, int DoctorId, int PetId, DateTime Date, string Time)
         {
             // 🚫 CHƯA LOGIN
             if (HttpContext.Session.GetInt32("UserID") == null)
@@ -76,12 +96,14 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = @"INSERT INTO Appointment (UserID, ServiceID, DoctorID, Date, Time)
-                                 VALUES (@userId, @serviceId, @doctorId, @date, @time)";
+                string query = @"INSERT INTO Appointment 
+                               (UserID, PetID,ServiceID, DoctorID, Date, Time, Status)
+                        VALUES (@userId, @petId,@serviceId, @doctorId, @date, @time, 'Pending')";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 cmd.Parameters.AddWithValue("@userId", userId);
+                cmd.Parameters.AddWithValue("@petId", PetId);
                 cmd.Parameters.AddWithValue("@serviceId", ServiceId);
                 cmd.Parameters.AddWithValue("@doctorId", DoctorId);
                 cmd.Parameters.AddWithValue("@date", Date);

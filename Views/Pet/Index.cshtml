@@ -1,0 +1,47 @@
+﻿@model List<dynamic>
+
+<div class="container mt-4">
+
+    <h2>Thú cưng của tôi</h2>
+
+    <!-- FORM THÊM PET -->
+    <form method="post" action="/Pet/Add" class="mb-4">
+
+        <input name="name" class="form-control mb-2" placeholder="Tên thú cưng" required />
+
+        <input name="type" class="form-control mb-2" placeholder="Loại (Chó/Mèo...)" required />
+
+        <input name="age" type="number" class="form-control mb-2" placeholder="Tuổi" required />
+
+        <button class="btn btn-primary">Thêm thú cưng</button>
+
+    </form>
+
+    <!-- DANH SÁCH -->
+    <table class="table table-bordered">
+
+        <tr>
+            <th>Tên</th>
+            <th>Loại</th>
+            <th>Tuổi</th>
+            <th></th>
+        </tr>
+
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Type</td>
+                <td>@p.Age</td>
+
+                <td>
+                    <a href="/Pet/Delete/@p.Id" class="btn btn-danger btn-sm">
+                        Xóa
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>

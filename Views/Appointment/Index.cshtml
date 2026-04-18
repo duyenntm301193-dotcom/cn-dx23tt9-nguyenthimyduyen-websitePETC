@@ -30,6 +30,19 @@
             }
         </select>
     </div>
+    <!-- CHỌN thú -->
+    <div class="mb-3">
+        <label class="form-label">Chọn thú cưng</label>
+
+        <select name="PetId" class="form-select" required>
+            <option disabled selected>-- Chọn thú cưng --</option>
+
+            @foreach (var p in ViewBag.Pets)
+            {
+                <option value="@p.Id">@p.Name</option>
+            }
+        </select>
+    </div>
 
     <!-- NGÀY KHÁM -->
     <div class="mb-3">
