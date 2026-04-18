@@ -111,11 +111,155 @@ namespace PETC.Controllers
 
                 cmd.ExecuteNonQuery();
             }
-
+ 
             // 👉 thông báo + reload
             TempData["Success"] = "Đặt lịch thành công!";
 
             return RedirectToAction("Index");
+        }
+        public IActionResult MyAppointments()
+        {
+            if (HttpContext.Session.GetInt32("UserID") == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            int userId = (int)HttpContext.Session.GetInt32("UserID");
+
+            var list = new List<dynamic>();
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = @"
+        SELECT 
+            a.AppointmentID,
+            s.ServiceName,
+            d.Name AS DoctorName,
+            p.PetName,
+            a.Date,
+            a.Time,
+            a.Status
+        FROM Appointment a
+        JOIN Service s ON a.ServiceID = s.ServiceID
+        JOIN Doctor d ON a.DoctorID = d.DoctorID
+        JOIN Pet p ON a.PetID = p.PetID
+        WHERE a.UserID = @userId
+        ORDER BY a.Date DESC";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@userId", userId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new
+                    {
+                        Id = (int)reader["AppointmentID"],
+                        Service = reader["ServiceName"].ToString(),
+                        Doctor = reader["DoctorName"].ToString(),
+                        Pet = reader["PetName"].ToString(),
+                        Date = reader["Date"],
+                        Time = reader["Time"].ToString(),
+                        Status = reader["Status"].ToString()
+                    });
+                }
+            }
+
+            return View(list);
+        }
+        // HỦY LỊCH 
+        public IActionResult Cancel(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "UPDATE Appointment SET Status = 'Cancel' WHERE AppointmentID = @id";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            return RedirectToAction("MyAppointments");
+        }
+        //ADMIN ACTION
+        public IActionResult Admin()
+        {
+            if (HttpContext.Session.GetString("Role") == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // 🚫 không phải admin
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var list = new List<dynamic>();
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = @"
+        SELECT 
+            a.AppointmentID,
+            u.Name AS UserName,
+            s.ServiceName,
+            d.Name AS DoctorName,
+            p.PetName,
+            a.Date,
+            a.Time,
+            a.Status
+        FROM Appointment a
+        JOIN [User] u ON a.UserID = u.UserID
+        JOIN Service s ON a.ServiceID = s.ServiceID
+        JOIN Doctor d ON a.DoctorID = d.DoctorID
+        JOIN Pet p ON a.PetID = p.PetID
+        ORDER BY a.Date DESC";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    list.Add(new
+                    {
+                        Id = (int)reader["AppointmentID"],
+                        User = reader["UserName"].ToString(),
+                        Service = reader["ServiceName"].ToString(),
+                        Doctor = reader["DoctorName"].ToString(),
+                        Pet = reader["PetName"].ToString(),
+                        Date = reader["Date"],
+                        Time = reader["Time"].ToString(),
+                        Status = reader["Status"].ToString()
+                    });
+                }
+            }
+
+            return View(list);
+        }
+        public IActionResult Confirm(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "UPDATE Appointment SET Status = 'Confirmed' WHERE AppointmentID = @id";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            return RedirectToAction("Admin");
         }
     }
 }

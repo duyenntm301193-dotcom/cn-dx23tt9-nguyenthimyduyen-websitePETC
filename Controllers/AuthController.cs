@@ -56,8 +56,17 @@ namespace PETC.Controllers
 
                 if (reader.Read())
                 {
+                    var role = reader["Role"].ToString();
+
                     HttpContext.Session.SetString("UserName", reader["Name"].ToString());
                     HttpContext.Session.SetInt32("UserID", (int)reader["UserID"]);
+                    HttpContext.Session.SetString("Role", reader["Role"].ToString());
+                    if (role == "Admin")
+                    {
+                        return RedirectToAction("Admin", "Appointment");
+                    }
+
+                    return RedirectToAction("Index", "Home");
                     return RedirectToAction("Index", "Home");
                 }
             }

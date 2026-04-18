@@ -20,55 +20,81 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
-                                Trang chủ
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Service" asp-action="Index">
-                                Dịch vụ
-                            </a>
-                        </li>
+                        <!--  USER -->
+                        @if (Context.Session.GetString("Role") != "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">
+                                    Trang chủ
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Index">
-                                Bác sĩ
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Service" asp-action="Index">
+                                    Dịch vụ
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Appointment" asp-action="Index">
-                                Đặt lịch
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Index">
+                                    Bác sĩ
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Appointment" asp-action="Index">
+                                    Đặt lịch
+                                </a>
+                            </li>
+                        }
+
+                        <!-- ADMIN -->
+                        @if (Context.Session.GetString("Role") == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/Appointment/Admin">
+                                    Quản lý lịch
+                                </a>
+                            </li>
+                        }
+
+                        <!-- LOGIN / USER INFO -->
                         @if (Context.Session.GetString("UserName") != null)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-white">
+                                <span class="nav-link text-primary fw-bold">
                                     Xin chào, @Context.Session.GetString("UserName")
                                 </span>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/Auth/Logout">Đăng xuất</a>
+                                <a class="nav-link text-dark" href="/Auth/Logout">Đăng xuất</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link" href="/Pet">Thú cưng của tôi</a>
-                            </li>
+                            <!--  CHỈ USER MỚI THẤY -->
+                            @if (Context.Session.GetString("Role") != "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="/Pet">Thú cưng của tôi</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="/Appointment/MyAppointments">Lịch của tôi</a>
+                                </li>
+                            }
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" href="/Auth/Login">Đăng nhập</a>
+                                <a class="nav-link text-dark" href="/Auth/Login">Đăng nhập</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="/Auth/Register">Đăng ký</a>
+                                <a class="nav-link text-dark" href="/Auth/Register">Đăng ký</a>
                             </li>
                         }
+
                     </ul>
                 </div>
             </div>

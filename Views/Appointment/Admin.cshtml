@@ -1,0 +1,48 @@
+﻿
+@model List<dynamic>
+
+<div class="container mt-4">
+
+    <h2>Quản lý lịch khám</h2>
+
+    <table class="table table-bordered mt-3">
+
+        <tr>
+            <th>Khách</th>
+            <th>Dịch vụ</th>
+            <th>Bác sĩ</th>
+            <th>Thú cưng</th>
+            <th>Ngày</th>
+            <th>Giờ</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.User</td>
+                <td>@item.Service</td>
+                <td>@item.Doctor</td>
+                <td>@item.Pet</td>
+                <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                <td>@item.Time</td>
+                <td>@item.Status</td>
+                <td>
+                    @if (item.Status == "Pending")
+                    {
+                        <a href="/Appointment/Confirm/@item.Id" class="btn btn-success btn-sm">
+                            Duyệt
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">--</span>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
