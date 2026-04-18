@@ -57,6 +57,7 @@ namespace PETC.Controllers
                 if (reader.Read())
                 {
                     HttpContext.Session.SetString("UserName", reader["Name"].ToString());
+                    HttpContext.Session.SetInt32("UserID", (int)reader["UserID"]);
                     return RedirectToAction("Index", "Home");
                 }
             }

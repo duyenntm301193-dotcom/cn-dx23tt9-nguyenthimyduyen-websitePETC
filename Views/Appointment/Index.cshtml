@@ -9,7 +9,8 @@
     <!-- TÊN KHÁCH HÀNG -->
     <div class="mb-3">
         <label>Tên khách hàng</label>
-        <input type="text" name="CustomerName" class="form-control" />
+        <input type="text" name="CustomerName" class="form-control"
+               value="@Context.Session.GetString("UserName")" readonly />
     </div>
 
     <!-- CHỌN DỊCH VỤ -->
