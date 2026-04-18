@@ -1,15 +1,36 @@
-﻿<h2>Danh sách bác sĩ</h2>
+﻿@model List<dynamic>
 
-<ul>
-    <li>
-        <a asp-controller="Doctor" asp-action="Detail" asp-route-id="1">
-            BS. Nguyễn Văn A
-        </a>
-    </li>
+<div class="container mt-4">
 
-    <li>
-        <a asp-controller="Doctor" asp-action="Detail" asp-route-id="2">
-            BS. Trần Thị B
-        </a>
-    </li>
-</ul>
+    <h2 class="mb-4 text-center">Đội ngũ bác sĩ</h2>
+
+    <div class="row">
+        @foreach (var d in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <a href="/Doctor/Detail/@d.Id" style="text-decoration: none; color: inherit;">
+
+                    <div class="card h-100 shadow-sm hover-card">
+
+
+                        <!-- NỘI DUNG -->
+                        <div class="card-body text-center">
+
+                            <h5 class="card-title">@d.Name</h5>
+
+                            <p class="card-text text-muted">
+                                @d.Speciality
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+    </div>
+
+</div>

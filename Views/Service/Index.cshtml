@@ -1,21 +1,37 @@
-﻿<h2>Danh sách dịch vụ</h2>
+﻿@model List<dynamic>
 
-<ul>
-    <li>
-        <a asp-controller="Service" asp-action="Detail" asp-route-id="1">
-            Khám tổng quát
-        </a>
-    </li>
+<div class="container mt-4">
 
-    <li>
-        <a asp-controller="Service" asp-action="Detail" asp-route-id="2">
-            Tiêm phòng
-        </a>
-    </li>
+    <h2 class="mb-4 text-center">Danh sách dịch vụ</h2>
 
-    <li>
-        <a asp-controller="Service" asp-action="Detail" asp-route-id="3">
-            Phẫu thuật
-        </a>
-    </li>
-</ul>
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <!-- BỌC CARD BẰNG LINK -->
+                <a href="/Service/Detail/@item.Id" style="text-decoration: none; color: inherit;">
+
+                    <div class="card h-100 shadow-sm hover-card">
+
+
+                        <div class="card-body text-center">
+
+                            <h5 class="card-title">@item.Name</h5>
+
+                            <p class="card-text text-muted">
+                                @item.Description
+                            </p>
+
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+    </div>
+
+</div>

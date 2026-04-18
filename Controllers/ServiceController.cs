@@ -1,39 +1,71 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace PETC.Controllers
 {
     public class ServiceController : Controller
     {
+        // TRANG DANH SÁCH SERVICE
         public IActionResult Index()
         {
-            return View();
+            var services = new List<dynamic>();
+
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "SELECT * FROM Service";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    services.Add(new
+                    {
+                        Id = (int)reader["ServiceID"],
+                        Name = reader["ServiceName"].ToString(),
+                        Price = reader["Price"],
+                        Description = reader["Description"].ToString()
+                    });
+                }
+            }
+
+            return View(services);
         }
 
+        // TRANG CHI TIẾT SERVICE
         public IActionResult Detail(int id)
         {
-            if (id == 1)
+            dynamic service = null;
+
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                ViewBag.Name = "Khám tổng quát";
-                ViewBag.Description = "Dịch vụ kiểm tra sức khỏe toàn diện cho thú cưng.";
-                ViewBag.Price = "200.000 VNĐ";
-                ViewBag.Image = "https://images.unsplash.com/photo-1583337130417-3346a1be7dee";
-            }
-            else if (id == 2)
-            {
-                ViewBag.Name = "Tiêm phòng";
-                ViewBag.Description = "Tiêm vaccine phòng bệnh cho thú cưng.";
-                ViewBag.Price = "150.000 VNĐ";
-                ViewBag.Image = "https://images.unsplash.com/photo-1579154204601-01588f351e67";
-            }
-            else if (id == 3)
-            {
-                ViewBag.Name = "Phẫu thuật";
-                ViewBag.Description = "Dịch vụ phẫu thuật an toàn với bác sĩ chuyên môn cao.";
-                ViewBag.Price = "Tùy dịch vụ";
-                ViewBag.Image = "https://images.unsplash.com/photo-1580281657527-47a67d4e9c9a";
+                conn.Open();
+
+                string query = "SELECT * FROM Service WHERE ServiceID = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    service = new
+                    {
+                        Id = (int)reader["ServiceID"],
+                        Name = reader["ServiceName"].ToString(),
+                        Price = reader["Price"],
+                        Description = reader["Description"].ToString(),
+                        Image = reader["ImageUrl"].ToString()
+                    };
+                }
             }
 
-            return View();
+            return View(service);
         }
     }
 }

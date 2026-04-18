@@ -1,35 +1,31 @@
-﻿@{
-    ViewData["Title"] = "Chi tiết dịch vụ";
-}
+﻿@model dynamic
 
-<div class="container mt-5">
+<div class="container mt-4">
 
     <div class="row">
 
         <!-- ẢNH -->
-        <div class="col-md-4 text-center">
-            <img src="@ViewBag.Image" class="img-fluid rounded shadow">
+        <div class="col-md-6">
+            <img src="@Model.Image" class="img-fluid rounded shadow-sm" />
         </div>
 
         <!-- THÔNG TIN -->
-        <div class="col-md-8">
-            <h2 class="text-primary">@ViewBag.Name</h2>
+        <div class="col-md-6">
 
-            <p class="mt-3">@ViewBag.Description</p>
+            <h2>@Model.Name</h2>
 
-            <h5 class="text-danger mt-3">Giá: @ViewBag.Price</h5>
+            <p class="text-muted">@Model.Description</p>
 
-            <div class="mt-4">
-                <a asp-controller="Appointment" asp-action="Index"
-                   class="btn btn-success me-2">
-                    Đặt lịch ngay
-                </a>
+            <h4 class="text-danger">
+                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", Model.Price) VNĐ
+            </h4>
 
-                <a asp-controller="Service" asp-action="Index"
-                   class="btn btn-secondary">
-                    Quay lại danh sách
-                </a>
-            </div>
+            <br />
+
+            <a href="/Appointment?serviceId=@Model.Id" class="btn btn-primary btn-lg">
+                Đặt lịch ngay
+            </a>
+
         </div>
 
     </div>

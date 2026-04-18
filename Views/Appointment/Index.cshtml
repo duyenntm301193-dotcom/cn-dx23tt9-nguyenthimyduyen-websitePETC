@@ -1,61 +1,82 @@
-﻿<div class="container mt-5">
-    <h2>Đặt lịch khám</h2>
+﻿@{
+    ViewData["Title"] = "Đặt lịch khám";
+}
 
-    <form>
+<h2>Đặt lịch khám</h2>
 
-        <!-- TÊN -->
-        <div class="mb-3">
-            <label class="form-label">Tên khách hàng</label>
-            <input type="text" class="form-control" />
-        </div>
+<form method="post">
 
-        <!-- DỊCH VỤ -->
-        <div class="mb-3">
-            <label class="form-label">Chọn dịch vụ</label>
-            <select class="form-select">
-                <option selected disabled>-- Chọn dịch vụ --</option>
-                <option value="1">Khám tổng quát</option>
-                <option value="2">Tiêm phòng</option>
-                <option value="3">Phẫu thuật</option>
-            </select>
-        </div>
+    <!-- TÊN KHÁCH HÀNG -->
+    <div class="mb-3">
+        <label>Tên khách hàng</label>
+        <input type="text" name="CustomerName" class="form-control" />
+    </div>
 
-        <!-- NGÀY -->
-        <div class="mb-3">
-            <label class="form-label">Ngày khám</label>
-            <input type="date" class="form-control" />
-        </div>
+    <!-- CHỌN DỊCH VỤ -->
+    <div class="mb-3">
+        <label>Chọn dịch vụ</label>
+        <select class="form-select" name="ServiceId">
+            <option disabled selected>-- Chọn dịch vụ --</option>
 
-        <!-- BÁC SĨ -->
-        <div class="mb-3">
-            <label class="form-label">Chọn bác sĩ</label>
-            <select class="form-select">
-                <option selected disabled>-- Chọn bác sĩ --</option>
-                <option value="1">BS. Nguyễn Văn A</option>
-                <option value="2">BS. Trần Thị B</option>
-            </select>
-        </div>
+            @if (ViewBag.Services != null)
+            {
+                foreach (var s in ViewBag.Services)
+                {
+                    <option value="@s.Id">
+                        @s.Name
+                    </option>
+                }
+            }
+        </select>
+    </div>
 
-        <!-- GIỜ KHÁM -->
-        <div class="mb-3">
-            <label class="form-label">Chọn giờ khám</label>
-            <select class="form-select">
-                <option selected disabled>-- Chọn giờ --</option>
-                <option>08:00</option>
-                <option>09:00</option>
-                <option>10:00</option>
-                <option>14:00</option>
-                <option>15:00</option>
-                <option>16:00</option>
-            </select>
-        </div>
+    <!-- NGÀY KHÁM -->
+    <div class="mb-3">
+        <label>Ngày khám</label>
+        <input type="date" name="Date" class="form-control" />
+    </div>
 
-        <!-- GHI CHÚ -->
-        <div class="mb-3">
-            <label class="form-label">Ghi chú</label>
-            <textarea class="form-control"></textarea>
-        </div>
+    <!-- CHỌN BÁC SĨ -->
+    <div class="mb-3">
+        <label>Chọn bác sĩ</label>
+        <select class="form-select" name="DoctorId">
+            <option disabled selected>-- Chọn bác sĩ --</option>
 
-        <button class="btn btn-primary">Đặt lịch</button>
-    </form>
-</div>
+            @if (ViewBag.Doctors != null)
+            {
+                foreach (var d in ViewBag.Doctors)
+                {
+                    <option value="@d.Id">
+                        @d.Name
+                    </option>
+                }
+            }
+        </select>
+    </div>
+
+    <!-- CHỌN GIỜ -->
+    <div class="mb-3">
+        <label>Chọn giờ khám</label>
+        <select name="Time" class="form-control">
+            <option value="">-- Chọn giờ --</option>
+            <option>08:00</option>
+            <option>09:00</option>
+            <option>10:00</option>
+            <option>14:00</option>
+            <option>15:00</option>
+            <option>16:00</option>
+        </select>
+    </div>
+
+    <!-- GHI CHÚ -->
+    <div class="mb-3">
+        <label>Ghi chú</label>
+        <textarea name="Note" class="form-control"></textarea>
+    </div>
+
+    <!-- NÚT -->
+    <button type="submit" class="btn btn-primary">
+        Đặt lịch
+    </button>
+
+</form>

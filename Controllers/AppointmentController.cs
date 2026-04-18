@@ -1,9 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
-public class AppointmentController : Controller
+namespace PETC.Controllers
 {
-    public IActionResult Index()
+    public class AppointmentController : Controller
     {
-        return View();
+        public IActionResult Index(int? serviceId)
+        {
+            var services = new List<dynamic>();
+            var doctors = new List<dynamic>();
+
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                // SERVICE
+                string serviceQuery = "SELECT * FROM Service";
+                SqlCommand serviceCmd = new SqlCommand(serviceQuery, conn);
+                SqlDataReader sr = serviceCmd.ExecuteReader();
+
+                while (sr.Read())
+                {
+                    services.Add(new
+                    {
+                        Id = (int)sr["ServiceID"],
+                        Name = sr["ServiceName"].ToString()
+                    });
+                }
+                sr.Close();
+
+                // DOCTOR
+                string doctorQuery = "SELECT * FROM Doctor";
+                SqlCommand doctorCmd = new SqlCommand(doctorQuery, conn);
+                SqlDataReader dr = doctorCmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    doctors.Add(new
+                    {
+                        Id = (int)dr["DoctorID"],
+                        Name = dr["Name"].ToString()
+                    });
+                }
+            }
+
+            ViewBag.Services = services;
+            ViewBag.Doctors = doctors;
+            ViewBag.SelectedServiceId = serviceId;
+
+            return View();
+        }
     }
 }

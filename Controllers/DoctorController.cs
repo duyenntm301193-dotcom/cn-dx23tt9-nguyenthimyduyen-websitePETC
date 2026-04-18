@@ -1,31 +1,72 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace PETC.Controllers
 {
     public class DoctorController : Controller
     {
+        // DANH SÁCH
         public IActionResult Index()
         {
-            return View();
-        }
-    public IActionResult Detail(int id)
-        {
-            if (id == 1)
+            var doctors = new List<dynamic>();
+
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
             {
-                ViewBag.Name = "BS. Nguyễn Văn A";
-                ViewBag.Specialty = "Chuyên khoa thú y tổng quát";
-                ViewBag.Description = "Có hơn 10 năm kinh nghiệm.";
-                ViewBag.Image = "https://images.unsplash.com/photo-1607746882042-944635dfe10e";
-            }
-            else if (id == 2)
-            {
-                ViewBag.Name = "BS. Trần Thị B";
-                ViewBag.Specialty = "Chuyên phẫu thuật thú y";
-                ViewBag.Description = "Chuyên phẫu thuật thú cưng.";
-                ViewBag.Image = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2";
+                conn.Open();
+
+                string query = "SELECT * FROM Doctor";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    doctors.Add(new
+                    {
+                        Id = (int)reader["DoctorID"],
+                        Name = reader["Name"].ToString(),
+                        Speciality = reader["Speciality"].ToString(),
+                        Image = reader["ImageUrl"].ToString()
+                    });
+                }
             }
 
-            return View();
+            return View(doctors);
+        }
+
+        // DETAIL
+        public IActionResult Detail(int id)
+        {
+            dynamic doctor = null;
+
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "SELECT * FROM Doctor WHERE DoctorID = @id";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    doctor = new
+                    {
+                        Id = (int)reader["DoctorID"],
+                        Name = reader["Name"].ToString(),
+                        Speciality = reader["Speciality"].ToString(),
+                        Experience = reader["Experience"],
+                        Description = reader["Description"].ToString(),
+                        Image = reader["ImageUrl"].ToString()
+                    };
+                }
+            }
+
+            return View(doctor);
         }
     }
 }
