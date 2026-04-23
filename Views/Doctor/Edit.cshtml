@@ -1,0 +1,32 @@
+﻿@model dynamic
+
+<div class="container mt-4">
+
+    <h2>Sửa bác sĩ</h2>
+
+    <form method="post">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <input name="name" value="@Model.Name" class="form-control mb-2" placeholder="Tên bác sĩ" />
+
+        <input name="speciality" value="@Model.Speciality" class="form-control mb-2" placeholder="Chuyên khoa" />
+
+        <input name="experience" value="@Model.Experience" class="form-control mb-2" placeholder="Kinh nghiệm" />
+
+        <textarea name="description" class="form-control mb-2" placeholder="Mô tả">
+            @Model.Description
+        </textarea>
+        <input name="imageUrl" value="@Model.ImageUrl"
+               class="form-control mb-2"
+               placeholder="Link hình ảnh" />
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" style="max-width:150px; margin-bottom:10px;" />
+        }
+
+        <button class="btn btn-primary">Cập nhật</button>
+
+    </form>
+
+</div>
