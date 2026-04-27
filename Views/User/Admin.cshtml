@@ -1,0 +1,113 @@
+﻿@{
+    var users = ViewBag.Users as List<dynamic>;
+    var details = ViewBag.Details as List<dynamic>;
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-3">Quản lý khách hàng</h2>
+
+    <table class="table table-bordered table-hover text-center align-middle">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Khách hàng</th>
+                <th>Email</th>
+                <th>Thú cưng</th>
+                <th>Ngày</th>
+                <th>Giờ</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var u in users)
+            {
+                // 🔥 ẨN ADMIN
+                if (u.Name == "Admin PETC") continue;
+
+                var userDetails = details
+                    .Where(d => d != null && d.UserID == u.Id)
+                    .ToList();
+
+                // ===== KHÔNG CÓ PET =====
+                if (userDetails.Count == 0)
+                {
+                    <tr>
+                        <td>@u.Name</td>
+                        <td>@u.Email</td>
+
+                        <td colspan="4" class="text-center text-muted">
+                            Chưa có dữ liệu
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var d in userDetails)
+                    {
+                        //SAFE DATA
+                        var petName = d?.PetName?.ToString();
+                        var date = d?.Date?.ToString();
+                        var time = d?.Time?.ToString();
+                        var status = d?.Status?.ToString();
+
+                        <tr>
+                            <td>@u.Name</td>
+                            <td>@u.Email</td>
+
+                            @* //KHÔNG CÓ PET *@
+                            @if (string.IsNullOrEmpty(petName))
+                            {
+                                <td colspan="4" class="text-center text-muted">
+                                    Chưa có dữ liệu
+                                </td>
+                            }
+                            else
+                            {
+                                <td>@petName</td>
+
+                                @* //CÓ PET NHƯNG KHÔNG CÓ LỊCH  *@
+                                @if (string.IsNullOrEmpty(date))
+                                {
+                                    <td colspan="3" class="text-center text-muted">
+                                        Chưa có dữ liệu
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>@date</td>
+                                    <td>@time</td>
+
+                                    <td>
+                                        @if (status == "Confirmed")
+                                        {
+                                            <span class="badge bg-success">Đã xác nhận</span>
+                                        }
+                                        else if (status == "Cancel")
+                                        {
+                                            <span class="badge bg-danger">Đã hủy</span>
+                                        }
+                                        else if (status == "Pending")
+                                        {
+                                            <span class="badge bg-warning text-dark">Chờ duyệt</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa có dữ liệu</span>
+                                        }
+                                    </td>
+                                }
+                            }
+
+                        </tr>
+                    }
+                }
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
