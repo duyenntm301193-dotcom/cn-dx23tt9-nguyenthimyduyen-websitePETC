@@ -16,7 +16,7 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = "SELECT * FROM Doctor";
+                string query = "SELECT * FROM Doctor WHERE Status = 'Active'";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -79,7 +79,7 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = "SELECT * FROM Doctor";
+                string query = "SELECT * FROM Doctor WHERE Status IS NULL OR Status = 'Active'";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -204,7 +204,7 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = "DELETE FROM Doctor WHERE DoctorID = @id";
+                string query = "UPDATE Doctor SET Status = 'Deleted' WHERE DoctorID = @id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", id);
 
@@ -213,5 +213,6 @@ namespace PETC.Controllers
 
             return RedirectToAction("Admin");
         }
+
     }
 }

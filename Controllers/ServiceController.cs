@@ -16,7 +16,7 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = "SELECT * FROM Service";
+                string query = "SELECT * FROM Service WHERE Status = 'Active' OR Status IS NULL";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -28,6 +28,7 @@ namespace PETC.Controllers
                         Name = reader["ServiceName"].ToString(),
                         Price = reader["Price"],
                         Description = reader["Description"].ToString()
+                    
                     });
                 }
             }
@@ -78,7 +79,7 @@ namespace PETC.Controllers
             {
                 conn.Open();
 
-                string query = "SELECT * FROM Service";
+                string query = "SELECT * FROM Service WHERE Status IS NULL OR Status = 'Active'";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -90,7 +91,8 @@ namespace PETC.Controllers
                         Name = reader["ServiceName"].ToString(),
                         Price = reader["Price"],
                         Description = reader["Description"].ToString(),
-                        ImageUrl = reader["ImageUrl"]?.ToString()
+                        ImageUrl = reader["ImageUrl"]?.ToString(),
+                        Status = reader["Status"]?.ToString()
                     });
                 }
             }
@@ -122,7 +124,8 @@ namespace PETC.Controllers
                         Name = reader["ServiceName"].ToString(),
                         Price = reader["Price"],
                         Description = reader["Description"].ToString(),
-                        ImageUrl = reader["ImageUrl"]?.ToString()
+                        ImageUrl = reader["ImageUrl"]?.ToString(),
+                         Status = reader["Status"]?.ToString()
                     };
                 }
             }
@@ -139,7 +142,7 @@ namespace PETC.Controllers
                 conn.Open();
 
                 string query = @"UPDATE Service 
-                         SET ServiceName=@name, Price=@price, Description=@desc, ImageURL=@img
+                         SET ServiceName=@name, Price=@price, Description=@desc, ImageUrL=@img
                          WHERE ServiceID=@id";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -181,6 +184,28 @@ namespace PETC.Controllers
                 cmd.Parameters.AddWithValue("@img", imageUrl);
                 cmd.ExecuteNonQuery();
             }
+
+            return RedirectToAction("Admin");
+        }
+        //ADMIN XÓA DỊCH VỤ
+        public IActionResult Delete(int id)
+        {
+            string connStr = "Server=localhost\\SQLEXPRESS;Database=PETC_DB;Trusted_Connection=True;TrustServerCertificate=True;";
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                // ❗ KHÔNG XÓA - chỉ update status
+                string query = "UPDATE Service SET Status = 'Deleted' WHERE ServiceID = @id";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            TempData["msg"] = "Đã xóa dịch vụ!";
 
             return RedirectToAction("Admin");
         }

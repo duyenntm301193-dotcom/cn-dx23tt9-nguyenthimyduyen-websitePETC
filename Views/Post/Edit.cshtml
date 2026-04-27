@@ -1,0 +1,33 @@
+﻿@model dynamic
+
+<div class="container mt-4">
+
+    <h2>Sửa bài viết</h2>
+
+    <form method="post">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <input name="title" value="@Model.Title"
+               class="form-control mb-2"
+               placeholder="Tiêu đề" />
+
+        <textarea name="content"
+                  class="form-control mb-2"
+                  rows="5"
+                  placeholder="Nội dung">@Model.Content</textarea>
+
+        <input name="imageUrl" value="@Model.ImageUrl"
+               class="form-control mb-2"
+               placeholder="Link hình ảnh" />
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" style="max-width:150px; margin-bottom:10px;" />
+        }
+
+        <button class="btn btn-primary">Cập nhật</button>
+
+    </form>
+
+</div>
