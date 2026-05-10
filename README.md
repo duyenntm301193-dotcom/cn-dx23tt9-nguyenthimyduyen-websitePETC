@@ -12,3 +12,5 @@ Folder Database trong branch master chứ file CSDL PETC_DB.sql
 1. MỞ SQL Server Management Studio
 2. Execute PETC_DB.sql
 3. Run project PETC_DB trong Visual Studio
+
+**Video demo hệ thống website:** https://www.youtube.com/watch?v=331dq3rQlvg
