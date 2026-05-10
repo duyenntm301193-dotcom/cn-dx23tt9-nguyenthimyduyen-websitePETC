@@ -4,7 +4,7 @@
 1.Main
 Main chứa file progress report và file Readme. 
 Main branch để cập nhật tiến độ và những thông tin cần thiết về dự án
-2. Master
+2.Master
 Master chứa file để chạy hệ thống 
 
 **Cách chạy CSDL**
