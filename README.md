@@ -5,7 +5,8 @@
 Main chứa file progress report và file Readme. 
 Main branch để cập nhật tiến độ và những thông tin cần thiết về dự án
 2. Master: 
-Master chứa file để chạy hệ thống 
+Master chứa file để chạy hệ thống. 
+Folder Database trong branch master chứ file CSDL PETC_DB.sql
 
 **Cách chạy CSDL**
 1. MỞ SQL Server Management Studio
