@@ -47,7 +47,7 @@ namespace PETC.Controllers
                     {
                         Id = (int)sr["ServiceID"],
                         Name = sr["ServiceName"].ToString(),
-                        Description = sr["Description"].ToString()
+           
                     });
                 }
                 sr.Close();

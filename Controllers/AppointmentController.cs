@@ -80,7 +80,7 @@ namespace PETC.Controllers
 
         }
 
-        // ===== POST (LƯU DATABASE) =====
+        // POST (LƯU DATABASE)
         [HttpPost]
         public IActionResult Index(int ServiceId, int DoctorId, int PetId, DateTime Date, string Time)
         {
@@ -95,6 +95,30 @@ namespace PETC.Controllers
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
+                // CHECK TRÙNG LỊCH
+                string checkQuery = @"
+                SELECT COUNT(*)
+                FROM Appointment
+                WHERE DoctorID = @doctorId
+                AND CAST(Date AS DATE) = CAST(@date AS DATE)
+                AND LTRIM(RTRIM(Time)) = LTRIM(RTRIM(@time))
+                AND Status IN ('Pending', 'Confirmed')";
+
+                SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+
+                checkCmd.Parameters.AddWithValue("@doctorId", DoctorId);
+                checkCmd.Parameters.AddWithValue("@date", Date);
+                checkCmd.Parameters.AddWithValue("@time", Time);
+
+                int count = (int)checkCmd.ExecuteScalar();
+
+                // 🚫 BỊ TRÙNG
+                if (count > 0)
+                {
+                    TempData["Error"] = "Bác sĩ đã có lịch trong khung giờ này!";
+
+                    return RedirectToAction("Index");
+                }
 
                 string query = @"INSERT INTO Appointment 
                                (UserID, PetID,ServiceID, DoctorID, Date, Time, Status)
@@ -170,7 +194,7 @@ namespace PETC.Controllers
 
             return View(list);
         }
-        // HỦY LỊCH 
+        // USER HỦY LỊCH
         public IActionResult Cancel(int id)
         {
             using (SqlConnection conn = new SqlConnection(connStr))
@@ -186,6 +210,30 @@ namespace PETC.Controllers
             }
 
             return RedirectToAction("MyAppointments");
+        }
+
+        // ADMIN HỦY LỊCH
+        public IActionResult AdminCancel(int id)
+        {
+            // 🚫 không phải admin
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string query = "UPDATE Appointment SET Status = 'Cancel' WHERE AppointmentID = @id";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            return RedirectToAction("Admin");
         }
         //ADMIN ACTION
         public IActionResult Admin()

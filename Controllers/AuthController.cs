@@ -67,7 +67,7 @@ namespace PETC.Controllers
                     }
 
                     return RedirectToAction("Index", "Home");
-                    return RedirectToAction("Index", "Home");
+                  
                 }
             }
 
